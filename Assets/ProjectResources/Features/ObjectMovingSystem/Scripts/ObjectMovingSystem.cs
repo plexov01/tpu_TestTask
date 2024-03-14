@@ -53,7 +53,7 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
                 Vector3 curPosition = _mainCamera.Camera.ScreenToWorldPoint(curScreenPoint);
                 _movingObject.transform.position = Vector3.Lerp(_movingObject.transform.position,curPosition , 5f * Time.deltaTime);
                 
-                Debug.Log(curPosition);
+                // Debug.Log(curPosition);
             }
         }
 
