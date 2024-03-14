@@ -1,8 +1,6 @@
 namespace  TPU_TestTask.Features.Object
 {
-    using Camera;
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
     /// <summary>
@@ -10,6 +8,9 @@ namespace  TPU_TestTask.Features.Object
     /// </summary>
     public class ResearchObject : MonoBehaviour
     {
+        /// <summary>
+        /// На объект кликнули
+        /// </summary>
         public event Action<GameObject> onObjectClicked = delegate {  };
         [SerializeField] private List<ObjectState> _objectStates = new List<ObjectState>();
         
