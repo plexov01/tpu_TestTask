@@ -1,6 +1,8 @@
 namespace TPU_TestTask.Features.TransparencyController
 {
     using Object;
+    using ObjectMovingSytem;
+    using SelectionPoint;
     using System.Collections.Generic;
     using System.Linq;
     using UnityEngine;
@@ -10,27 +12,54 @@ namespace TPU_TestTask.Features.TransparencyController
     public class TransparencyController : MonoBehaviour
     {
         private List<ResearchObject> _researchObjects = new List<ResearchObject>();
+        private List<SelectionPoint> _selectionPoints = new List<SelectionPoint>();
+
+        private ObjectMovingSystem _objectMovingSystem = default;
 
         private void Start()
         {
             _researchObjects = FindObjectsOfType<ResearchObject>().ToList();
+            _selectionPoints = FindObjectsOfType<SelectionPoint>().ToList();
+
+            _objectMovingSystem = FindObjectOfType<ObjectMovingSystem>();
             
             foreach (var researchObject in _researchObjects)
             {
-                researchObject.onObjectClicked += MakeTransparent;
+                researchObject.OnObjectClicked += MakeHalfTransparent;
+                researchObject.OnObjectClicked += MakeAllSelectionPointsNotTransparent;
             }
             
-            
+            foreach (var selectionPoint in _selectionPoints)
+            {
+                MakeFullTransparent(selectionPoint.gameObject);
+                selectionPoint.OnMousePointed += MakeAllSelectionPointsFullTransparent;
+                selectionPoint.OnMouseNotPointed += MakeAllSelectionPointsNotTransparent;
+            }
+
+            _objectMovingSystem.OnMovingObjectNotOnScreen += MakeNotTransparent;
+            _objectMovingSystem.OnMovingObjectOnScreen += MakeHalfTransparent;
+
+
         }
         private void OnDisable()
         {
             foreach (var researchObject in _researchObjects)
             {
-                researchObject.onObjectClicked -= MakeTransparent;
+                researchObject.OnObjectClicked -= MakeHalfTransparent;
+                researchObject.OnObjectClicked -= MakeAllSelectionPointsNotTransparent;
             }
+            
+            foreach (var selectionPoint in _selectionPoints)
+            {
+                selectionPoint.OnMousePointed -= MakeAllSelectionPointsFullTransparent;
+                selectionPoint.OnMouseNotPointed -= MakeAllSelectionPointsNotTransparent;
+            }
+            
+            _objectMovingSystem.OnMovingObjectNotOnScreen -= MakeNotTransparent;
+            _objectMovingSystem.OnMovingObjectOnScreen -= MakeHalfTransparent;
         }
 
-        private void MakeTransparent(GameObject transparentObject)
+        private void MakeHalfTransparent(GameObject transparentObject)
         {
             Material objectMaterial = transparentObject.GetComponent<Renderer>().material;
             Color newColor = objectMaterial.color;
@@ -45,6 +74,30 @@ namespace TPU_TestTask.Features.TransparencyController
             Color newColor = objectMaterial.color;
             newColor.a = 1;
             objectMaterial.color = newColor;
+        }
+
+        private void MakeFullTransparent(GameObject transparentObject)
+        {
+            Material objectMaterial = transparentObject.GetComponent<Renderer>().material;
+            Color newColor = objectMaterial.color;
+            newColor.a = 0;
+            objectMaterial.color = newColor;
+        }
+
+        private void MakeAllSelectionPointsFullTransparent(GameObject transparentObject)
+        {
+            foreach (var selectionPoint in _selectionPoints)
+            {
+                MakeFullTransparent(selectionPoint.gameObject);
+            }
+        }
+
+        private void MakeAllSelectionPointsNotTransparent(GameObject transparentObject)
+        {
+            foreach (var selectionPoint in _selectionPoints)
+            {
+                MakeNotTransparent(selectionPoint.gameObject);
+            }
         }
     }
 }
