@@ -16,7 +16,7 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         /// <summary>
         /// Объект не привязан к экрану
         /// </summary>
-        public event Action<GameObject> OnMovingObjectNotOnScreen = delegate {  }; 
+        public event Action<GameObject> OnMovingObjectOnSelectionPoint = delegate {  }; 
         /// <summary>
         /// Объект привязан к экрану
         /// </summary>
@@ -88,17 +88,22 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         }
         
         /// <summary>
-        /// Передвинуть объект в точку
+        /// Передвинуть объект в точку выбора состояния
         /// </summary>
         /// <param name="pointToMove"></param>
         private void MoveObjectToPoint(GameObject pointToMove)
         {
+            if (_movingObject==null)
+            {
+                return;
+            }
+            
             _onScreen = false;
             
             // _movingObject.GetComponent<Collider>().enabled = true;
             
             _movingPosition = pointToMove.transform.position;
-            OnMovingObjectNotOnScreen(_movingObject);
+            OnMovingObjectOnSelectionPoint(_movingObject);
         }
 
         private void FixedUpdate()
