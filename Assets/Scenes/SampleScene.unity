@@ -698,6 +698,7 @@ GameObject:
   - component: {fileID: 1682734963}
   - component: {fileID: 1682734962}
   - component: {fileID: 1682734961}
+  - component: {fileID: 1682734964}
   m_Layer: 0
   m_Name: VariationPoint1
   m_TagString: Untagged
@@ -714,7 +715,7 @@ Transform:
   m_GameObject: {fileID: 1682734959}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.52, y: 0.46500003, z: -0.35820004}
-  m_LocalScale: {x: 0.5, y: 0.25, z: 0.05}
+  m_LocalScale: {x: 1, y: 0.5, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 682112333}
@@ -783,6 +784,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1682734959}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1682734964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682734959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64665775aee61334ab9f216403a2f9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1812336845
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,6 +870,7 @@ GameObject:
   - component: {fileID: 2147229549}
   - component: {fileID: 2147229548}
   - component: {fileID: 2147229547}
+  - component: {fileID: 2147229550}
   m_Layer: 0
   m_Name: VariationPoint2
   m_TagString: Untagged
@@ -873,7 +887,7 @@ Transform:
   m_GameObject: {fileID: 2147229545}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0.52, y: -0.478, z: -0.35820004}
-  m_LocalScale: {x: 0.5, y: 0.25, z: 0.05}
+  m_LocalScale: {x: 1, y: 0.5, z: 0.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 682112333}
@@ -942,6 +956,18 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2147229545}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2147229550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147229545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64665775aee61334ab9f216403a2f9d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2594573941020495538
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -949,6 +975,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 135347606}
     m_Modifications:
+    - target: {fileID: 2594573941196797922, guid: e2fdd4efeadcf7a478191762daf0963d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8fb1fdb1c78b170408a19f674e4a8b97, type: 2}
     - target: {fileID: 2594573941196797948, guid: e2fdd4efeadcf7a478191762daf0963d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1110,6 +1140,10 @@ PrefabInstance:
     - target: {fileID: 8711353504953906249, guid: 3f844e0f803300f48add41d75029432a, type: 3}
       propertyPath: m_Name
       value: Object1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8711353504953906255, guid: 3f844e0f803300f48add41d75029432a, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f844e0f803300f48add41d75029432a, type: 3}
