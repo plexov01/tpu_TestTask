@@ -20,14 +20,13 @@ namespace TPU_TestTask.Features.SelectionPoint
         private void OnMouseEnter()
         {
             OnMousePointed(gameObject);
-            Debug.Log("in");
         }
 
         private void OnMouseExit()
         {
             OnMouseNotPointed(gameObject);
-            Debug.Log("out");
         }
+        
     }
 
 }

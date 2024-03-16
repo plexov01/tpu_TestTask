@@ -12,7 +12,10 @@ namespace  TPU_TestTask.Features.Object
         /// На объект кликнули
         /// </summary>
         public event Action<GameObject> OnObjectClicked = delegate {  };
-        [SerializeField] private List<ObjectState> _objectStates = new List<ObjectState>();
+        /// <summary>
+        /// Список позиций объекта
+        /// </summary>
+        public List<ObjectState> _objectStates = new List<ObjectState>();
 
         private Vector3 _startPosition = default;
         private Quaternion _startRotation = default;
@@ -35,6 +38,8 @@ namespace  TPU_TestTask.Features.Object
             transform.position = _startPosition;
             transform.rotation = _startRotation;
         }
+
+
     }
 
 }
