@@ -76,6 +76,11 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         /// <param name="triggeredObject"></param>
         private void MovingObjectMoveToScreen(GameObject triggeredObject)
         {
+            if (_movingObject==null)
+            {
+                return;
+            }
+            
             _onScreen = true;
             
             _movingObject.GetComponent<Collider>().enabled = false;
