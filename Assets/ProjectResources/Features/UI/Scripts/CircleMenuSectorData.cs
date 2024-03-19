@@ -13,7 +13,6 @@ namespace TPU_TestTask.Features.CircleMenu
         public Image ImageButton = default;
         public Color NormalColor = Color.white;
         public Color HighlightedColor = Color.gray;
-        public Color PressedColor = Color.black;
     }
 
 }

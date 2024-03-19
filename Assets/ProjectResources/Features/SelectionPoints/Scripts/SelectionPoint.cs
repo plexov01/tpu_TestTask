@@ -1,6 +1,8 @@
 namespace TPU_TestTask.Features.SelectionPoint
 {
+    using Object;
     using System;
+    using System.Collections.Generic;
     using UnityEngine;
     /// <summary>
     /// Точки выбора позиций объетов
@@ -16,15 +18,14 @@ namespace TPU_TestTask.Features.SelectionPoint
         /// Событие при сведении мыши с точки выбора
         /// </summary>
         public event Action<GameObject> OnMouseNotPointed = delegate {  };
+        /// <summary>
+        /// Список позиций объекта
+        /// </summary>
+        public List<ObjectState> _objectStates = new List<ObjectState>();
         
         private void OnMouseEnter()
         {
             OnMousePointed(gameObject);
-        }
-
-        private void OnMouseExit()
-        {
-            OnMouseNotPointed(gameObject);
         }
         
     }

@@ -1,6 +1,8 @@
 namespace TPU_TestTask.Features.ObjectMovingSytem
 {
     using Camera;
+    using CircleMenu;
+    using InputController;
     using Object;
     using SelectionPoint;
     using System;
@@ -14,6 +16,14 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
     public class ObjectMovingSystem : MonoBehaviour
     {
         /// <summary>
+        /// Объекту возвращается исходная прозрачность
+        /// </summary>
+        public event Action<GameObject> OnReturningTransparencyObject = delegate {  };
+        /// <summary>
+        /// Объекты возвращаются в стартовое состояние
+        /// </summary>
+        public event Action OnReturningStartStateObjects = delegate {  };
+        /// <summary>
         /// Объект не привязан к экрану
         /// </summary>
         public event Action<GameObject> OnMovingObjectOnSelectionPoint = delegate {  }; 
@@ -23,6 +33,8 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         public event Action<GameObject> OnMovingObjectOnScreen = delegate {  };
 
         private MainCamera _mainCamera = default;
+        private MouseInputController _mouseInputController = default;
+        private CircleMenuController _circleMenuController = default;
         
         private List<ResearchObject> _researchObjects = new List<ResearchObject>();
         private List<SelectionPoint> _selectionPoints = new List<SelectionPoint>();
@@ -37,9 +49,14 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         private void Start()
         {
             _mainCamera = FindObjectOfType<MainCamera>();
+            _mouseInputController = FindObjectOfType<MouseInputController>();
+            _circleMenuController = FindObjectOfType<CircleMenuController>();
             
             _researchObjects = FindObjectsOfType<ResearchObject>().ToList();
             _selectionPoints = FindObjectsOfType<SelectionPoint>().ToList();
+
+            _mouseInputController.OnMouseLeftButtonUp += CheckAndReturnObjects;
+            _circleMenuController.OnNotSelectingItem += ReturnObjects;
             
             foreach (var researchObject in _researchObjects)
             {
@@ -49,7 +66,6 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
             foreach (var selectionPoint in _selectionPoints)
             {
                 selectionPoint.OnMousePointed += MoveObjectToPoint;
-                selectionPoint.OnMouseNotPointed += MovingObjectMoveToScreen;
             }
         }
         /// <summary>
@@ -59,7 +75,10 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
         private void MoveObjectToScreen(GameObject movingObject)
         {
             _onScreen = true;
-
+            if (_movingObject!=null)
+            {
+                ReturnObjects();
+            }
             _movingObject = movingObject;
 
             _movingObject.GetComponent<Collider>().enabled = false;
@@ -68,6 +87,7 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
             _pointScreen.z = 2f;
 
             _movingObject.transform.rotation = _mainCamera.transform.rotation;
+            OnMovingObjectOnScreen(_movingObject);
             
         }
         /// <summary>
@@ -105,9 +125,10 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
             
             _onScreen = false;
             
-            // _movingObject.GetComponent<Collider>().enabled = true;
-            
+            _movingObject.GetComponent<Collider>().enabled = true;
+
             _movingPosition = pointToMove.transform.position;
+            
             OnMovingObjectOnSelectionPoint(_movingObject);
         }
 
@@ -128,8 +149,32 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
             
         }
 
+        private void CheckAndReturnObjects()
+        {
+            if (_onScreen)
+            {
+                _onScreen = false;
+                _movingObject.GetComponent<Collider>().enabled = true;
+                
+                OnReturningTransparencyObject(_movingObject);
+                OnReturningStartStateObjects();
+                
+                _movingObject = null;
+            }
+            
+        }
+
+        private void ReturnObjects()
+        {
+            OnReturningStartStateObjects();
+            _movingObject = null;
+        }
+
         private void OnDisable()
         {
+            _mouseInputController.OnMouseLeftButtonUp -= CheckAndReturnObjects;
+            _circleMenuController.OnNotSelectingItem -= ReturnObjects;
+            
             foreach (var researchObject in _researchObjects)
             {
                 researchObject.OnObjectClicked -= MoveObjectToScreen;
@@ -138,7 +183,6 @@ namespace TPU_TestTask.Features.ObjectMovingSytem
             foreach (var selectionPoint in _selectionPoints)
             {
                 selectionPoint.OnMousePointed -= MoveObjectToPoint;
-                selectionPoint.OnMouseNotPointed -= MovingObjectMoveToScreen;
             }
         }
         

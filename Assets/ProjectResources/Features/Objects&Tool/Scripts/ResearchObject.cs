@@ -1,5 +1,6 @@
 namespace  TPU_TestTask.Features.Object
 {
+    using ObjectMovingSytem;
     using System;
     using System.Collections.Generic;
     using UnityEngine;
@@ -12,20 +13,24 @@ namespace  TPU_TestTask.Features.Object
         /// На объект кликнули
         /// </summary>
         public event Action<GameObject> OnObjectClicked = delegate {  };
-        /// <summary>
-        /// Список позиций объекта
-        /// </summary>
-        public List<ObjectState> _objectStates = new List<ObjectState>();
 
         private Vector3 _startPosition = default;
         private Quaternion _startRotation = default;
+
+        private ObjectMovingSystem _objectMovingSystem = default;
 
         private void Awake()
         {
             _startPosition = transform.position;
             _startRotation = transform.rotation;
         }
-        
+
+        private void Start()
+        {
+            _objectMovingSystem = FindObjectOfType<ObjectMovingSystem>();
+            _objectMovingSystem.OnReturningStartStateObjects += ReturnStartState;
+        }
+
         private void OnMouseDown()
         {
             OnObjectClicked(gameObject);
@@ -39,7 +44,10 @@ namespace  TPU_TestTask.Features.Object
             transform.rotation = _startRotation;
         }
 
-
+        private void OnDisable()
+        {
+            _objectMovingSystem.OnReturningStartStateObjects -= ReturnStartState;
+        }
     }
 
 }

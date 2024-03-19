@@ -1,10 +1,7 @@
 namespace TPU_TestTask.Features.CircleMenu
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using UnityEngine;
-    using UnityEngine.Serialization;
     using UnityEngine.UI;
 
     /// <summary>
@@ -16,13 +13,18 @@ namespace TPU_TestTask.Features.CircleMenu
         
         private List<GameObject> _circleMenuSectors = new List<GameObject>();
         private List<CircleMenuSectorData> _circleMenuSectorsData = new List<CircleMenuSectorData>();
-
-        private GameObject _circleMenu = default;
         
         private void Start()
         {
-            _circleMenu = gameObject;
             HideUI();  
+        }
+        /// <summary>
+        /// Получить радиус сектора
+        /// </summary>
+        /// <returns></returns>
+        public float GetSectorRadius()
+        {
+            return CircleMenuSector.GetComponent<RectTransform>().sizeDelta.x / 2;
         }
         /// <summary>
         /// Настроить круговое меню
@@ -31,7 +33,7 @@ namespace TPU_TestTask.Features.CircleMenu
         /// <param name="circleMenuSectorsData"></param>
         public void SetupCircleMenu(Vector3 positionMenu, List<CircleMenuSectorData> circleMenuSectorsData)
         {
-            _circleMenu.transform.position = positionMenu;
+            gameObject.transform.position = positionMenu;
             
             _circleMenuSectorsData = circleMenuSectorsData;
             
@@ -40,6 +42,7 @@ namespace TPU_TestTask.Features.CircleMenu
                 if (i < _circleMenuSectors.Count)
                 {
                     _circleMenuSectors[i].GetComponent<Image>().fillAmount = (float)1/circleMenuSectorsData.Count;
+                    _circleMenuSectors[i].transform.rotation = Quaternion.Euler(0f, 0f, -i * (360f / circleMenuSectorsData.Count));
                 }
                 else
                 {
@@ -58,7 +61,7 @@ namespace TPU_TestTask.Features.CircleMenu
         /// <param name="index"></param>
         public void SetChosenSectorByIndex(int index)
         {
-            for (int i = 0; i < _circleMenuSectors.Count; i++)
+            for (int i = 0; i < _circleMenuSectorsData.Count; i++)
             {
                 _circleMenuSectors[i].GetComponent<Image>().color = _circleMenuSectorsData[i].NormalColor;
             }
@@ -74,9 +77,9 @@ namespace TPU_TestTask.Features.CircleMenu
         /// </summary>
         public void ShowUI()
         {
-            foreach (var circleMenuSector in _circleMenuSectors)
+            for (int i = 0; i < _circleMenuSectorsData.Count; i++)
             {
-                circleMenuSector.SetActive(true);
+                _circleMenuSectors[i].SetActive(true);
             }
         }
         
